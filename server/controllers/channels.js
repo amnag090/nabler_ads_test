@@ -5,13 +5,14 @@ const channel = require('../modules/channels');
 
 exports.create = (req,res) =>{
    const {channel_name,views,spent_in_usd} = req.body;
-   const slug = slugify(channel_name)
+   const slug = slugify(`${channel_name} ${Date.now('micro')}`)
 
    channel.create({channel_name,views,spent_in_usd,slug},(err,channel) =>{
     if(err){
         console.log(err);
         res.status(400).json({
-            error: "error occured"
+            error: "error occured",
+            message : err.message
         });
     }
     res.json(channel);
@@ -74,3 +75,5 @@ exports.deleteChannel = (req,res) => {
                 }) 
             })
 }
+
+

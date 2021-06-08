@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
-var validate = require('mongoose-validator');
+
 const channelSchema = new mongoose.Schema({
     channel_name:{
         type: String,
         trim: true,
-        min: 3,
-        required:true
+        min: [3,"Channel name should have atleast 3 characters"],
+        required:[true,"Channel name is required"],
     },
     slug:{
         type : String,
-        unique : true,
-        index: true,
+        unique : [true,"This channel name is already in use please try something else"],
+        index: [true,"This channel name is already in use please try something else"],
         lowercase: true
     },
     views:{
