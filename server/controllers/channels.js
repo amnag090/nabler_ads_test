@@ -21,7 +21,7 @@ exports.create = (req,res) =>{
 
 exports.getAll = (req,res) => {
   channel.find({})
-            .sort({created_at:-1})
+            .sort({date:-1})
             .exec((err,channels)=>{
                 if(err) {
                     console.log(err);
@@ -75,5 +75,43 @@ exports.deleteChannel = (req,res) => {
                 }) 
             })
 }
+
+exports.getChannelViews = (req,res) => {
+    channel.find({})
+              .sort({date:-1})
+              .exec((err,channels)=>{
+                  if(err) {
+                      console.log(err);
+                      res.status(400).json({
+                          error: "could not fetch records"
+                      })
+                  }
+                  const data = 
+                  {
+                    labels: [],
+                    datasets: [
+                      {
+                        label: '',
+                        data: [],
+                        backgroundColor : [
+                            'rgba(54, 162, 235, 0.2)',
+                          ],
+                          borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                          ],
+                        borderWidth: 1,
+                      },
+                  ],
+                  };
+                  channels.forEach(channel => {
+                      data.labels.push(channel.channel_name);
+                      data.datasets[0].data.push(channel.views);
+                      data.datasets[0].label = "# of Views";
+                  });
+                  res.json(data)
+              });
+  }
+
+
 
 
