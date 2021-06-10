@@ -25,7 +25,7 @@ useEffect(() => {
 },[]);
 
 const deleteConfirm = slug => {
-  let conf = window.confirm("Are you sure ytou want to delet this post");
+  let conf = window.confirm("Are you sure you want to delete this channel");
   if(conf){
     deletePost(slug)
   }
