@@ -60,7 +60,7 @@ const UpdateChannel = (props) => {
     return (
         <div className=" container pb-5">
             <Nav />
-            <h1>Create Channel</h1><br />
+            <h1>Update Channel : {channel_name}</h1><br />
             <form onSubmit={submitHandler}>
                 <div className=" form-group">
                     <label className=" text-muted">Channel Name</label>
@@ -80,7 +80,7 @@ const UpdateChannel = (props) => {
                     <DateTimePicker onChange={dateHandler} value={date} />
                 </div>
                 <div>
-                    <button className=" btn btn-primary">Create</button>
+                    <button className=" btn btn-primary">Update</button>
                 </div>
             </form>
 

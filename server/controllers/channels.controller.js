@@ -1,79 +1,73 @@
 const { default: slugify } = require('slugify');
-const channel = require('../modules/channels');
+const channel = require('../models/channels.model');
+const channelService = require('../services/channels.service');
 
 
 
-exports.create = (req,res) =>{
+exports.create = async (req,res,next) =>{
    const {channel_name,views,spent_in_usd} = req.body;
    const slug = slugify(`${channel_name} ${Date.now('micro')}`)
 
-   channel.create({channel_name,views,spent_in_usd,slug},(err,channel) =>{
-    if(err){
-        console.log(err);
-        res.status(400).json({
-            error: "error occured",
-            message : err.message
-        });
-    }
-    res.json(channel);
-   })
+   try {
+       var channel = await channelService.create(channel_name,views,spent_in_usd,slug)
+       return res.json(channel);
+       
+   } catch (error) {
+       return res.status(404).json({
+           message : error.message
+       })
+   }
 }
 
-exports.getAll = (req,res) => {
-  channel.find({})
-            .sort({date:-1})
-            .exec((err,channels)=>{
-                if(err) {
-                    console.log(err);
-                    res.status(400).json({
-                        error: "could not fetch records"
-                    })
-                }
-                res.json(channels)
-            });
+exports.getAll = async (req,res,next) => {
+    try {
+        var channels = await channelService.getAll()
+        return res.json(channels);
+    } catch (error) {
+        return res.status(404).json({
+            message : error.message
+        })
+    }
 }
-exports.getChannel = (req,res) => {
-    const {slug} = req.params;
-   channel.findOne({slug})
-            .exec((err,channel) =>{
-                if(err) {
-                    console.log(err);
-                    res.status(400).json({
-                        error: `could not fetch record ${slug} `
-                    })
-                }
-                res.json(channel) 
-            });
+
+exports.getChannel = async (req,res,next) => {
+    try {
+        const {slug} = req.params;
+        var channels = await channelService.getChannel(slug)
+        return res.json(channels);
+    } catch (error) {
+        return res.status(404).json({
+            message : error.message
+        })
+    }
 }
-exports.updateChannel = (req,res) => {
+
+exports.updateChannel = async (req,res,next) =>{
     const {slug} = req.params;
     const {channel_name,views,spent_in_usd,date} = req.body;
+ 
+    try {
+        var channels = await channelService.updateChannel(channel_name,views,spent_in_usd,slug,date)
+        return res.json(channels);
+        
+    } catch (error) {
+        return res.status(404).json({
+            message : error.message
+        })
+    }
+ }
 
-    channel.findOneAndUpdate({slug},{channel_name,views,spent_in_usd,date},{new:true})
-            .exec((err,channel)=>{
-                if(err) {
-                    console.log(err);
-                    res.status(400).json({
-                        error: "could not update record"
-                    });
-                }
-                res.json(channel) 
-            });
-}
-exports.deleteChannel = (req,res) => {
-    const {slug} = req.params;
-    channel.findOneAndDelete({slug})
-            .exec((err,channel) => {
-                if(err) {
-                    console.log(err);
-                    res.status(400).json({
-                        error: "could not update record"
-                    });
-                }
-                res.json({
-                    message:`${slug} deleted`
-                }) 
-            })
+
+ exports.deleteChannel = async (req,res,next) => {
+    try {
+        const {slug} = req.params;
+        var channels = await channelService.deleteChannel(slug)
+        return res.json(`${channels} deleted`);
+    } catch (error) {
+        return res.status(404).json({
+            message : error.message
+        })
+    }
 }
 
 exports.getChannelViews = (req,res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {create,getAll,getChannel,updateChannel,deleteChannel,getChannelViews,getChannelSpends} = require('../controllers/channels');
+const {create,getAll,getChannel,updateChannel,deleteChannel,getChannelViews,getChannelSpends} = require('../controllers/channels.controller');
 
 router.post("/",create);
 router.get("/",getAll);

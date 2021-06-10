@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 //imports
-const channelRoutes = require('./routes/channels');
+const channelRoutes = require('./routes/channels.route');
 
 
 // instantiate express
