@@ -112,6 +112,43 @@ exports.getChannelViews = (req,res) => {
               });
   }
 
+  exports.getChannelSpends = (req,res) => {
+    channel.find({})
+              .sort({date:-1})
+              .exec((err,channels)=>{
+                  if(err) {
+                      console.log(err);
+                      res.status(400).json({
+                          error: "could not fetch records"
+                      })
+                  }
+                  const data = 
+                  {
+                    labels: [],
+                    datasets: [
+                      {
+                        label: '',
+                        data: [],
+                        backgroundColor : [
+                            'rgba(255, 99, 132, 0.2)',
+                          ],
+                          borderColor: [
+                            'rgba(255, 99, 132, 1)',
+
+                          ],
+                        borderWidth: 1,
+                      },
+                  ],
+                  };
+                  channels.forEach(channel => {
+                      data.labels.push(channel.channel_name);
+                      data.datasets[0].data.push(channel.spent_in_usd);
+                      data.datasets[0].label = "Amount Spent($)";
+                  });
+                  res.json(data)
+              });
+  }
+
 
 
 

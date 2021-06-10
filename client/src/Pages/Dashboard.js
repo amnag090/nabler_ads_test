@@ -43,7 +43,21 @@ const Dashboard = () => {
   ],
   });
 
-  const getAllChannels = () =>{
+  const [data_channel_spent, setDataChannelSpent] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: '',
+        data: [],
+        backgroundColor: [],
+        borderColor: [
+        ],
+        borderWidth: 1,
+      },
+  ],
+  });
+
+  const getAllChannelsViews = () =>{
     axios.get(`${process.env.REACT_APP_API}/channels/dashboard/channelViews`)
     .then(response =>{
       console.log(response);
@@ -54,9 +68,21 @@ const Dashboard = () => {
       alert("Error while fetching channels")
     })
   }
+  const getAllChannelsSpends = () =>{
+    axios.get(`${process.env.REACT_APP_API}/channels/dashboard/channelSpends`)
+    .then(response =>{
+      console.log(response);
+      setDataChannelSpent(response.data)
+    })
+    .catch(error=> {
+      console.log(error)
+      alert("Error while fetching channels")
+    })
+  }
 
   useEffect(() => {
-    getAllChannels();
+    getAllChannelsViews();
+    getAllChannelsSpends();
   }, []);
  
   
@@ -68,7 +94,7 @@ const Dashboard = () => {
           <Bar data={data_channel_view} options={options} />
         </div>
         <div className="col-6">
-          {/* <Bar data={data2} options={options} /> */}
+          <Bar data={data_channel_spent} options={options} />
         </div>
       </div>
     </div>
