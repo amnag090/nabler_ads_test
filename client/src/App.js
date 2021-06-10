@@ -59,7 +59,7 @@ const deletePost = (slug) => {
                 <p> Published on <span className="badge">{new Date(channel.date).toLocaleString()}</span></p>
               </div>
               <div className = "col-lg-2 pt-2 pb-2"> 
-                <Link to ={`/update/${channel.slug}`} className="btn btn-sm btn-outline-warning">
+                <Link to ={`/channels/update/${channel.slug}`} className="btn btn-sm btn-outline-warning">
                   Update
                 </Link>
                 <button onClick = {()=>deleteConfirm(channel.slug)} className ="btn btn-sm btn-outline-danger ml-1">Delete</button>
